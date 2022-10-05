@@ -22,35 +22,42 @@ public class ProductController {
 
 	@Autowired
 	private ProductRepository repo;
-
+	
 	@GetMapping
 	public Iterable<Product> getProducts() {
+		try {
+			Thread.sleep(30000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return repo.findAll();
 	}
-
+	
 	@GetMapping("/{id}")
 	public Product getProduct(@PathVariable("id") Integer id) {
 		Optional<Product> optProduct = repo.findById(id);
 		if (optProduct.isEmpty()) {
 			throw new ProductNotFoundException(id);
 		}
+		System.out.println(optProduct.get());
+		System.out.println("test print 2");
+		System.out.println("TEST PRINT 3");
 		return optProduct.get();
 	}
-
+	
 	@PostMapping
 	public Product create(@RequestBody Product product) {
 		return repo.save(product);
 	}
-
+	 
 	@PutMapping
 	public Product update(@RequestBody Product product) {
 		return repo.save(product);
 	}
 
 	@DeleteMapping("/{id}")
-
 	public void delete(@PathVariable("id") Integer id) {
 		repo.deleteById(id);
 	}
-
+	
 }
